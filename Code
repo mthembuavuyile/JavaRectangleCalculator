@@ -1,0 +1,106 @@
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class RectangleCalculator {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to the Rectangle Calculator!");
+
+        while (true) {
+            System.out.println("\nChoose an option:");
+            System.out.println("1. Calculate Area");
+            System.out.println("2. Calculate Perimeter");
+            System.out.println("3. Calculate Diagonal");
+            System.out.println("4. Exit");
+
+            int choice = getUserChoice(scanner);
+
+            switch (choice) {
+                case 1:
+                    calculateArea(scanner);
+                    break;
+                case 2:
+                    calculatePerimeter(scanner);
+                    break;
+                case 3:
+                    calculateDiagonal(scanner);
+                    break;
+                case 4:
+                    System.out.println("Exiting the program. Goodbye!");
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice. Please enter a number between 1 and 4.");
+            }
+        }
+    }
+
+    private static int getUserChoice(Scanner scanner) {
+        int choice = 0;
+        boolean validChoice = false;
+
+        while (!validChoice) {
+            try {
+                System.out.print("Enter your choice: ");
+                choice = scanner.nextInt();
+                if (choice >= 1 && choice <= 4) {
+                    validChoice = true;
+                } else {
+                    System.out.println("Invalid choice. Please enter a number between 1 and 4.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.next(); // clear the invalid input
+            }
+        }
+
+        return choice;
+    }
+
+    private static void calculateArea(Scanner scanner) {
+        System.out.println("\nCalculate Area");
+        int length = getPositiveInput("Length", scanner);
+        int width = getPositiveInput("Width", scanner);
+
+        int area = length * width;
+        System.out.println("Area (A) = Length (l) * Width (w) = " + length + " * " + width + " = " + area);
+    }
+
+    private static void calculatePerimeter(Scanner scanner) {
+        System.out.println("\nCalculate Perimeter");
+        int length = getPositiveInput("Length", scanner);
+        int width = getPositiveInput("Width", scanner);
+
+        int perimeter = 2 * (length + width);
+        System.out.println("Perimeter (P) = 2 * (Length (l) + Width (w)) = 2 * (" + length + " + " + width + ") = " + perimeter);
+    }
+
+    private static void calculateDiagonal(Scanner scanner) {
+        System.out.println("\nCalculate Diagonal");
+        int length = getPositiveInput("Length", scanner);
+        int width = getPositiveInput("Width", scanner);
+
+        double diagonal = Math.sqrt(Math.pow(length, 2) + Math.pow(width, 2));
+        System.out.println("Diagonal (d) = √(Length (l)^2 + Width (w)^2) = √(" + length + "^2 + " + width + "^2) ≈ " + diagonal);
+    }
+
+    private static int getPositiveInput(String dimension, Scanner scanner) {
+        int value;
+        do {
+            try {
+                System.out.print("Please enter the " + dimension + ": ");
+                value = scanner.nextInt();
+                if (value <= 0) {
+                    System.out.println("Please enter a positive value for " + dimension + ".");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.next(); // clear the invalid input
+                value = -1; // set value to -1 to trigger the loop again
+            }
+        } while (value <= 0);
+
+        return value;
+    }
+}
